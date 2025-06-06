@@ -1,3 +1,5 @@
+import sys
+import csv
 import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text
@@ -5,11 +7,20 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-# Opening the training data file
+# Increasing the max limit for reading CSV fields
+csv.field_size_limit(100000000)
+
+# Opening the training data file    
 df = pd.read_csv("D:\\Sheridan Cyber Security Program\\Year 4\\Semester 8\\ISS Graduation Project (Phase 2)\\Training Data\\SpamAssasin.csv")
 
-# Splitting the data into test data and training data
-x_train, x_test, y_train, y_test = train_test_split(df["body"], df["label"].values, stratify=df["label"], train_size=0.2)
+# Drop any rows with empty body or label
+df.dropna(subset=["body"], inplace=True)
+
+# # Splitting the data into test data and training data
+x_train, x_test, y_train, y_test = train_test_split(df["body"], df["label"].values, stratify=df["label"], test_size=0.2)
+
+print(f"Size of Training Data: {len(x_train)} - {len(y_train)}")
+print(f"Size of Test Data: {len(x_test)} - {len(y_test)}")
 
 # Import the uncased bert model for preprocessing text
 preprocessor = hub.KerasLayer(
