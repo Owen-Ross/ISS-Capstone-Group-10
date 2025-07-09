@@ -1,32 +1,40 @@
 import tensorflow as tf
-import numpy as np
-from lime.lime_text import LimeTextExplainer
+import tensorflow_hub as hub
+import tensorflow_text as text
+import shap
 
 # Load the BERT model (with KerasLayer for TF Hub)
-model = tf.keras.models.load_model('nlp_phishing_model.keras', custom_objects={
-    'KerasLayer': tf.keras.layers.Layer
-})
+model = tf.keras.models.load_model('nlp_phishing_model.keras', custom_objects={'KerasLayer':hub.KerasLayer})
 
-# Define the predict_proba function for LIME
-def predict_proba(texts):
-    # Ensure input is a numpy array of strings
-    texts = np.array(texts, dtype=str)
-    probs = model.predict(texts)
+# Define prediction function that accepts raw strings
+def predict_fn(texts):
+    return model(tf.constant(texts, dtype=tf.string))
 
-    # Convert [N, 1] to [N, 2] for binary classification (benign or phishing)
-    if probs.shape[1] == 1:
-        probs = np.hstack([1 - probs, probs])
-    return probs
+# Use a small subset for explanation
+sample_texts = ["You have been selected for a free trip to the Bahamas!"]
 
-# Function to explain model's decision
-def explain_decision(email):
-    explainer = LimeTextExplainer(class_names=["benign", "phishing"])
-    explanation = explainer.explain_instance(email, predict_proba(email), num_features=10)
-    explanation.save_to_file('nlp_model_results.html')
+# Create a text masker explicitly
+masker = shap.maskers.Text()
 
-# Prompt for input
-print("Enter a test email body to test the NLP model:\n")
-email = input()
+# Create the SHAP explainer for text input
+explainer = shap.Explainer(predict_fn, masker)
 
-# Run explanation
-explain_decision(email)
+# Get SHAP values
+shap_values = explainer(sample_texts)
+
+# Save SHAP text explanation to HTML
+html_output = shap.plots.text(shap_values[0], display=False)
+
+prediction = model(tf.constant(sample_texts, dtype=tf.string))[0][0]
+
+# Inject prediction into HTML
+prediction_html = f"""
+    <div style='font-family: Arial; font-size: 18px; margin-bottom: 10px;'>
+        <strong>Model Prediction:</strong> {prediction}
+    </div>
+"""
+full_html = f"{prediction_html}\n{html_output}"
+
+# Save to HTML file
+with open("shap_text_output.html", "w", encoding="utf-8") as f:
+    f.write(full_html)
