@@ -1,0 +1,6 @@
+Flask
+flask_cors
+tensorflow_hub==0.16.1
+tensorflow_text==2.10.0
+requests==2.32.3
+gunicorn==23.0.0
