@@ -1,0 +1,17 @@
+Deploy Model to Google Bucket:
+gsutil cp -r "D:\Sheridan Cyber Security Program\Year 4\Semester 8\ISS Graduation Project (Phase 2)\NLP Model Code\nlp_phishing_model" gs://group10_nlp_model/
+
+Deploy Model to Google Vertex AI
+gcloud ai models upload --region=us-central1 --display-name=phishing-nlp-model --artifact-uri=gs://group10_nlp_model/nlp_phishing_model --container-image-uri=us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-15:latest --project=capstone-nlp-api
+
+Getting the Model ID of the Model Deployed to Vertex AI
+gcloud ai models list --region=us-central1 --project=capstone-nlp-api
+
+Get Endpoint ID for Model:
+gcloud ai endpoints list --region=us-central1 --project=capstone-nlp-api
+
+Creating an Endpoint for Model Prediciton:
+gcloud ai endpoints deploy-model <ENDPOINT ID> --region=us-central1 --model=<MODEL ID> --display-name=phishing-model-deployment --machine-type=n1-standard-2 --project=capstone-nlp-api
+
+Deploying API Application to Google Cloud Run:
+gcloud run deploy phishing-api-proxy --source "D:\Sheridan Cyber Security Program\Year 4\Semester 8\ISS Graduation Project (Phase 2)\Flask_API" --region us-central1 --platform managed --service-account=578705582953-compute@developer.gserviceaccount.com --allow-unauthenticated --project=capstone-nlp-api
