@@ -1,3 +1,14 @@
+"""
+Filename: nlp_model_test_bert.py
+Created by: Owen Ross <rossow@sheridancollege.ca>
+Created on: July 9, 2025
+
+Last modeified by: Owen Ross <rossow@sheridancollege.ca>
+Last modeified on: August 7, 2025
+
+Description: Use the SHAP library to get a visual explaination on how the model got it's prediction
+"""
+
 import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text

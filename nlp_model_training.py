@@ -1,3 +1,20 @@
+"""
+Filename: nlp_model_training.py
+Created by: Owen Ross <rossow@sheridancollege.ca>
+Created on: May 11, 2025
+
+Last modeified by: Owen Ross <rossow@sheridancollege.ca>
+Last modeified on: August 7, 2025
+
+Description: This script trains a binary classification model using Tensorflow and Keras
+to detect phishing emails based on their body content. The trained model is saved for future 
+inference in a browser extension or other applications.
+
+NOTE: This is the original script that was used for training the model. This script does not include
+BERT encoding, and is no longer used to train the model. This is included to showcase the progress of 
+training the NLP model, and the diference between the first attempt at training the model, with our
+current code for training the model.
+"""
 
 # Importing the required libraries for execution libraries
 import tensorflow as tf

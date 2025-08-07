@@ -1,3 +1,15 @@
+"""
+Filename: api.py
+Created by: Owen Ross <rossow@sheridancollege.ca>
+Created on: August 1, 2025
+
+Last modeified by: Owen Ross <rossow@sheridancollege.ca>
+Last modeified on: August 7, 2025
+
+Description: This API application, gets the credentials from Google, sends the email content to the
+NLP model endpoint, and send the prediction from the NLP model to the browser extension.
+"""
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
@@ -7,6 +19,8 @@ import google.auth
 from google.auth.transport.requests import Request
 
 app = Flask(__name__)
+
+# Allows the API to make cross-domain asyncronous requests in chrome
 CORS(app, origins=["chrome-extension://mecgfbiblohefgmkojmgikbmjjcjklm"])
 
 # Getting the required credentials from Google

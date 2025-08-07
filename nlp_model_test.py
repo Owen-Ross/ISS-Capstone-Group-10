@@ -1,3 +1,17 @@
+"""
+Filename: nlp_model_test.py
+Created by: Owen Ross <rossow@sheridancollege.ca>
+Created on: May 11, 2025
+
+Last modeified by: Owen Ross <rossow@sheridancollege.ca>
+Last modeified on: August 7, 2025
+
+Description: Using the LIME library to explain the prediciton the model gave for the
+input the user provides.
+
+NOTE: This script is no longer being used, this is included to show the progress of the project.
+"""
+
 # Import the libraries that are needed for execution
 import tensorflow as tf
 import pickle
